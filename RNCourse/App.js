@@ -1,14 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,  View, FlatList } from 'react-native';
+import { StyleSheet,  View, FlatList, Button } from 'react-native';
 import { useState } from 'react';
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
 
 export default function App() {
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const [courseGoals, setCourseGoals] = useState([]);
+
+  function startAddGoalHandler() {
+    setModalIsVisible(true)
+  }
+
+  function endAddGoalHandler() {
+    setModalIsVisible(false)  
+  }
 
   function addGoalHandler(enteredGoalText) {
     setCourseGoals((currentCourseGoals) => [...currentCourseGoals, {text: enteredGoalText, id: Math.random().toString()}])
+    endAddGoalHandler();
   };
 
   function deleteGoalHandler(id) {
@@ -18,32 +28,37 @@ export default function App() {
   }
 
   return (
-    <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
-      <View style={styles.goalsContainer}>
-        <FlatList data={courseGoals} renderItem={itemData => {
-          return (
-            <GoalItem 
-            id={itemData.item.id}
-            text={itemData.item.text} 
-            onDeleteItem={deleteGoalHandler} 
+    <>
+      <StatusBar style='light'/>
+      <View style={styles.appContainer}>
+        <Button title='Add New Goal' color="#a065ec" onPress={startAddGoalHandler}/>
+        <GoalInput visible={modalIsVisible} onAddGoal={addGoalHandler} onCancel={endAddGoalHandler} />
+        <View style={styles.goalsContainer}>
+          <FlatList data={courseGoals} renderItem={itemData => {
+            return (
+              <GoalItem 
+              id={itemData.item.id}
+              text={itemData.item.text} 
+              onDeleteItem={deleteGoalHandler} 
 
-            />
-          )
-        }} 
-        keyExtractor={(item,index) => {
-          return item.id;
-        }}
-        />
-      </View>
-    </View> 
+              />
+            )
+          }} 
+          keyExtractor={(item,index) => {
+            return item.id;
+          }}
+          />
+        </View>
+      </View> 
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    padding: 50,
+    paddingTop: 50,
+    paddingHorizontal: 16,
   },
   goalsContainer: {
     flex: 5
