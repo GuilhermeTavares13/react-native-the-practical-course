@@ -5,7 +5,8 @@ import NumberContainer from '../components/game/NumberContainer';
 import PrimaryButton from '../components/ui/PrimaryButton';
 import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -56,10 +57,10 @@ function GameScreen({userNumber, onGameOver}) {
             <InstructionText style={styles.instructionText}>Higher or Lower?</InstructionText> 
             <View style={styles.buttonsContainer}>
               <View style={styles.buttonContainer}>
-                  <PrimaryButton onPress={nextGuessHandler.bind(this,'lower')}>+</PrimaryButton>
+                  <PrimaryButton onPress={nextGuessHandler.bind(this,'lower')}><AntDesign name="plus" size={24} color="white" /></PrimaryButton>
               </View>
               <View style={styles.buttonContainer}>
-                <PrimaryButton onPress={nextGuessHandler.bind(this,'greater')}><Ionicons name="md-remove" /></PrimaryButton>
+                <PrimaryButton onPress={nextGuessHandler.bind(this,'greater')}><AntDesign name="minus" size={24} color="white" /></PrimaryButton>
               </View>
             </View>
         </Card>
