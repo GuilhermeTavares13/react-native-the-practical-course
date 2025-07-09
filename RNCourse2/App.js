@@ -12,18 +12,24 @@ export default function App() {
 
   function pickedNumberHandler(pickedNumber) {
     setUserNumber(pickedNumber);
+    setGameIsOver(false);
   }
 
-  let screen = <StartGameScreen onPickNumber={pickedNumberHandler}/>;
+   function gameOverHandler() {
+    setGameIsOver(true);
+  }
+
+  let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
 
   if (userNumber) {
-    screen = <GameScreen userNumber={userNumber}/>
+    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />
   }
 
-  if (gameIsOver) {
+  if (gameIsOver && userNumber) {
     screen = <GameOverScreen />
   }
 
+ 
   return (
     <LinearGradient colors={[Colors.primary800,Colors.accent500]} style={styles.rootScreen}>
       <ImageBackground source={require('./assets/images/background.png')} 
