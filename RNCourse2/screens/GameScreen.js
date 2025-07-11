@@ -24,12 +24,18 @@ let maxBoundary = 100;
 function GameScreen({userNumber, onGameOver}) {
     const initialGuess = generateRandomBetween(1,100,userNumber);
     const [currentGuess,setCurrentGuess] = useState(initialGuess);
+    const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
     useEffect(() => {
       if (currentGuess === userNumber) {
         onGameOver();
       }
     }, [currentGuess,userNumber,onGameOver])
+
+    useEffect(() => {
+      minBoudary = 1;
+      maxBoundary = 100;
+    },[])
 
     function nextGuessHandler(direction) { // direction => 'lower', 'greater'
       if ((direction === 'lower' && currentGuess < userNumber) || (direction === 'greater' && currentGuess > userNumber)) {
@@ -47,6 +53,7 @@ function GameScreen({userNumber, onGameOver}) {
       }
       const newRndNumber = generateRandomBetween(minBoudary,maxBoundary,currentGuess);
       setCurrentGuess(newRndNumber);
+      setGuessRounds(prevGuessRounds => [newRndNumber,...prevGuessRounds])
     }
 
     return (
