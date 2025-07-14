@@ -60,21 +60,41 @@ function GameScreen({userNumber, onGameOver}) {
 
     const guessRoundsListLength = guessRounds.length;
 
+    let content = 
+        <>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <Card>
+              <InstructionText style={styles.instructionText}>Higher or Lower?</InstructionText> 
+              <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
+                    <PrimaryButton onPress={nextGuessHandler.bind(this,'lower')}><AntDesign name="plus" size={24} color="white" /></PrimaryButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                  <PrimaryButton onPress={nextGuessHandler.bind(this,'greater')}><AntDesign name="minus" size={24} color="white" /></PrimaryButton>
+                </View>
+              </View>
+          </Card>
+        </>
+
+    if (width > 500) {
+      content = 
+      <>
+        <View style={styles.buttonContainerWide}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this,'greater')}><AntDesign name="minus" size={24} color="white" /></PrimaryButton>
+          </View>  
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this,'lower')}><AntDesign name="plus" size={24} color="white" /></PrimaryButton>
+          </View>
+        </View> 
+      </>
+    }
+
     return (
     <View style={styles.screen}>
         <Title>Opponent's Guess</Title>
-        <NumberContainer>{currentGuess}</NumberContainer>
-        <Card>
-            <InstructionText style={styles.instructionText}>Higher or Lower?</InstructionText> 
-            <View style={styles.buttonsContainer}>
-              <View style={styles.buttonContainer}>
-                  <PrimaryButton onPress={nextGuessHandler.bind(this,'lower')}><AntDesign name="plus" size={24} color="white" /></PrimaryButton>
-              </View>
-              <View style={styles.buttonContainer}>
-                <PrimaryButton onPress={nextGuessHandler.bind(this,'greater')}><AntDesign name="minus" size={24} color="white" /></PrimaryButton>
-              </View>
-            </View>
-        </Card>
+        {content}
         <View style={styles.listContainer}>
           {/* {guessRounds.map(guessround => <Text>{guessround}</Text>)} */}
           <FlatList data={guessRounds} renderItem={(itemData) => <GuessLogItem roundNumber={guessRoundsListLength - itemData.index} guess={itemData.index}/>}
@@ -98,6 +118,10 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1,
+    },
+    buttonContainerWide: {
+      flexDirection: 'row',
+      alignItems: 'center'
     },
     instructionText: {
       marginBottom: 12
